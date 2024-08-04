@@ -513,13 +513,13 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongb71bf66">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong0566093">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> b71bf66
+aria-hidden="true"></span> <strong>Repository version:</strong> 0566093
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongb71bf66"
+<div id="strongRepositoryversionstrong0566093"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -528,7 +528,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version b71bf66.
+The results in this page were generated with repository version 0566093.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -604,6 +604,40 @@ Message
 Rmd
 </td>
 <td>
+0566093
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+<td>
+wflow_publish("analysis/linear_models.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+173a6e4
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 b71bf66
 </td>
 <td>
@@ -639,8 +673,7 @@ class="section level1 tabset">
 <h1 class="tabset">Relationship between nutrients and inflammatory
 markers</h1>
 <p>Plotting the different variables against one another is a good way to
-see what we can expect from the models, and is useful to see if and how
-we need to pre-process the data before performing a regression.</p>
+see what we can expect from the models.</p>
 <div id="pairwise-relationships" class="section level2 tabset">
 <h2 class="tabset">Pairwise relationships</h2>
 <p>The plot below summarise the pairwise relationships between the
@@ -653,12 +686,86 @@ probability density function of the values of the variable.</p>
 <div id="unadjusted-for-confounders" class="section level3">
 <h3>Unadjusted for confounders</h3>
 <p><img src="figure/linear_models.Rmd/ggpairs1-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ggpairs1-1">
+Past versions of ggpairs1-1.png
+</button>
+</p>
+<div id="fig-ggpairs1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+173a6e4
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Looking only at the scatter plots of the nutrient intake against the
 inflammation markers we cannot see clear trends.</p>
 </div>
 <div id="adjusted-for-confounders" class="section level3">
 <h3>Adjusted for confounders</h3>
 <p><img src="figure/linear_models.Rmd/ggpairs1adj-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ggpairs1adj-1">
+Past versions of ggpairs1adj-1.png
+</button>
+</p>
+<div id="fig-ggpairs1adj-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+173a6e4
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="linear-models" class="section level2 tabset">
@@ -667,8 +774,90 @@ inflammation markers we cannot see clear trends.</p>
 <h3>Vitamin C and CRP</h3>
 <pre><code>`geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="figure/linear_models.Rmd/unnamed-chunk-1-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
+Past versions of unnamed-chunk-1-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+173a6e4
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>`geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="figure/linear_models.Rmd/unnamed-chunk-1-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-2">
+Past versions of unnamed-chunk-1-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+173a6e4
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We can observe a clear change in the slope of the regression line
+before and after adjusting for confounding factors. This would suggest
+that an anti inflammatory effect of the Vitamin C on CRP that is masked
+by effect of aging on obesity status.</p>
+<p>Nonetheless, the gray band that identify the 95% confidence interval
+can contain an horizontal line. This, confirms the results observed in
+the correlation analysis, suggesting that we cannot exclude that result
+might be a false positive.</p>
 </div>
 </div>
 </div>
@@ -681,6 +870,43 @@ markers</h1>
 <div id="unadjusted-for-confounders-1" class="section level3">
 <h3>Unadjusted for confounders</h3>
 <p><img src="figure/linear_models.Rmd/ggpairs3-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ggpairs3-1">
+Past versions of ggpairs3-1.png
+</button>
+</p>
+<div id="fig-ggpairs3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+173a6e4
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>As for the previous panel, an observation of the scatter plots of the
 aDII score and its components against the inflammation markers does not
 reveal any clear trend.</p>
@@ -688,6 +914,43 @@ reveal any clear trend.</p>
 <div id="adjusted-for-confounders-1" class="section level3">
 <h3>Adjusted for confounders</h3>
 <p><img src="figure/linear_models.Rmd/ggpairs3adj-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ggpairs3adj-1">
+Past versions of ggpairs3adj-1.png
+</button>
+</p>
+<div id="fig-ggpairs3adj-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+173a6e4
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="linear-models-1" class="section level2 tabset">
@@ -696,8 +959,88 @@ reveal any clear trend.</p>
 <h3>Iron and IL6</h3>
 <pre><code>`geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="figure/linear_models.Rmd/unnamed-chunk-2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+173a6e4
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>`geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="figure/linear_models.Rmd/unnamed-chunk-2-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-2">
+Past versions of unnamed-chunk-2-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+173a6e4
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In this case the slope of the regression line does not change before
+and after sdjusting for confounders but again, the gray area identifying
+the confidence interval can contain an horizontal line.</p>
+<p>Since this observation is confirmed by the confidence intervals of
+the correlation analysis, we cannot exclude the possibility of a false
+positive result.</p>
 </div>
 </div>
 </div>
