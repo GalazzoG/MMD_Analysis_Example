@@ -13,7 +13,7 @@ In this section, we investigate in more details the correlations observed in the
 
 # Relationship between nutrients and inflammatory markers {.tabset}
 
-Plotting the different variables against one another is a good way to see what we can expect from the models, and is useful to see if and how we need to pre-process the data before performing a regression.
+Plotting the different variables against one another is a good way to see what we can expect from the models.
 ```{r env prep, include=FALSE}
 # Define a character vector with the names of libraries to be used in the analysis
 lib.list<-c(   "dplyr",   
@@ -168,6 +168,10 @@ ggplot(vitc.crp.adj, aes(rank_vitc,rank_crp))+
   ggtitle("Rank of values adjusted for Age, Gender, BMI, and Total Kcal Intake")
 ```
 
+We can observe a clear change in the slope of the regression line before and after adjusting for confounding factors. This would suggest that an anti inflammatory effect of the Vitamin C on CRP that is masked by effect of aging on obesity status.
+
+Nonetheless, the gray band that identify the 95% confidence interval can contain an horizontal line. This, confirms the results observed in the correlation analysis, suggesting that we cannot exclude that result might be a false positive.
+
 # Relationship between aDII and inflammatory markers {.tabset}
 
 ## Pairwise relationships {.tabset}
@@ -256,6 +260,10 @@ ggplot(iron.il6.adj, aes(rank_fe,rank_il6))+
   theme_minimal()+
   ggtitle("Rank of values adjusted for Age, Gender, BMI, and Total Kcal Intake (IL-6 only)")
 ```
+
+In this case the slope of the regression line does not change before and after sdjusting for confounders but again, the gray area identifying the confidence interval can contain an horizontal line. 
+
+Since this observation is confirmed by the confidence intervals of the correlation analysis, we cannot exclude the possibility of a false positive result.
 
 # Effect of the inflammatory potential of the diet on low grade inflammation
 
