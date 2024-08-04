@@ -514,13 +514,13 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstronge7963f8">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstronga2be92a">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> e7963f8
+aria-hidden="true"></span> <strong>Repository version:</strong> a2be92a
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstronge7963f8"
+<div id="strongRepositoryversionstronga2be92a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -529,7 +529,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version e7963f8.
+The results in this page were generated with repository version a2be92a.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -547,7 +547,7 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
-    Untracked:  analysis/linear_models.Rmd
+    Untracked:  analysis/conclusion.Rmd
     Untracked:  data/.~lock.ZScore_metacardis2.csv#
     Untracked:  data/Dietary_Object.RData
     Untracked:  data/Metadata.RData
@@ -602,6 +602,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+a2be92a
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+<td>
+wflow_publish("analysis/Correlations_Nutrition_Inflammation.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+b62ab85
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -746,72 +780,6 @@ very close to 0. This suggests that, the associations close to the
 significance thresholds might be false positive.</li>
 </ul>
 </div>
-<div id="food-groups" class="section level2">
-<h2>Food Groups</h2>
-<p><img src="figure/Correlations_Nutrition_Inflammation.Rmd/corrfoodplot-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-corrfoodplot-1">
-Past versions of corrfoodplot-1.png
-</button>
-</p>
-<div id="fig-corrfoodplot-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-1dd1e38
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>In terms of negative <strong>anti-inflammatory</strong> correlations
-we observe an association between:</p>
-<ul>
-<li>Alcoholic beverages with TNFa</li>
-<li>Red meat and offal with Z-score</li>
-</ul>
-<p>The anti-inflammatory effect of alcohol consumption (in moderate
-amounts) is well known in the literature and reflected in the paper
-where the aDII was introduced. In this paper the inflammatory potential
-of alcohol is negative, meaning an anti-inflammatory effect. While the
-negative correlation of red meat and offal consumption, although above
-the threshold of significance, it should be interpreted with caution for
-the reasons explained in the note.</p>
-<p>On the other hand we observe the <strong>pro-inflammatory</strong>
-effect of:</p>
-<ul>
-<li>Sweetened beverages and SAA</li>
-<li>Animal fat and IL6</li>
-<li>Oily fish with ICAM1</li>
-</ul>
-<p><strong>Note:</strong> The same caution introduced in the previous
-plot should be applied here. For correlations with significant p-values
-but very close to its alpha of 0.05, more attention should be given to
-the confidence intervals and if their upper or lower bound is very close
-to 0.</p>
-</div>
 <div id="adii" class="section level2">
 <h2>ADII</h2>
 <p>With this analysis we aim to explore directly the inflammatory effect
@@ -875,6 +843,11 @@ saturated fat consumption.</p>
 <p>The <strong>pro-inflammatory</strong> effect of iron and vitamin B12
 is expected given their inflammatory score of 0.032 and 0.106
 respectively.</p>
+<p><strong>Note:</strong> The same caution introduced in the previous
+plot should be applied here. For correlations with significant p-values
+but very close to its alpha of 0.05, more attention should be given to
+the confidence intervals and if their upper or lower bound is very close
+to 0.</p>
 </div>
 </div>
 <div id="results-discussion" class="section level1">
