@@ -1,5 +1,5 @@
 ---
-title: "Table of content"
+title: "Table of Content"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
@@ -8,6 +8,7 @@ editor_options:
   chunk_output_type: console
 ---
 
+- [About this report](modifications.html)
 - [Correlation between diet and inflammatory biomarkers](Correlations_Nutrition_Inflammation.html)
 - [Regression Models](linear_models.html)
 - [Conclusions & Future Steps](conclusion.html)

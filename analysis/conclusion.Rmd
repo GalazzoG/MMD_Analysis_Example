@@ -1,0 +1,19 @@
+---
+title: "Conclusions & Future Steps"
+author: "Gianluca Galazzo"
+date: "2024-08-04"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+# Conclusions
+
+The findings presented in this report are aligned with the expectetions set by the existing literature. However, the wide range of the confidence intervals and their closeness to zero, both for the correlation and regression slopes, indicate that these results might be false positives.
+
+
+# Future Steps
+
+Given the results obtained, the following steps are recommended:
+
+Do not repeat the analysis after the second batch of samples is ready. Instead, is advised  to use this dataset to perform a power calculation to identify the correct sample size before repeating the analysis.

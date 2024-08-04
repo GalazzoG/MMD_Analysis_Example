@@ -1,0 +1,14 @@
+---
+title: "Description of the dataset used and filtering steps"
+author: "Gianluca Galazzo"
+date: "2024-08-04"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+# Origin
+
+# Filtering
+
+# Final Dataset

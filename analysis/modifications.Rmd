@@ -1,0 +1,25 @@
+---
+title: "Report Modifications"
+author: "Gianluca Galazzo"
+date: "2024-08-04"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+This section include a description of how this report and the data used in it, have been modified from their original form.
+
+# The origal report
+
+preliminary investigation
+contained many more results and sections 
+reduced to meet the interview requirements.
+
+# The original dataset
+
+Not detailed scope of the original study
+anonimisaion of the labels and shuffling of the clinical groups
+
+# Important notes
+
+the way the adii was calculated cannot be showed,
