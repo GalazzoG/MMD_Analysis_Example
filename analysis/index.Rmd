@@ -9,5 +9,5 @@ editor_options:
 ---
 
 - [Correlation between diet and inflammatory biomarkers](Correlations_Nutrition_Inflammation.html)
-- [Regression Models](regression_models.html)
+- [Regression Models](linear_models.html)
 - [Conclusions & General remarks](conclusion.html)
