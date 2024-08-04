@@ -143,62 +143,6 @@ In general for all the volcano plots displayed in this report we should keep in 
 - The small sample size of the dataset and its imbalance in the number of subjects per group, calls for caution when evaluating the p-values close to the threshold of significance. In these cases is often advised to rely more in the confidence interval more reliable than the p-values.
 - The 95% confidence interval for the rho coefficients has a very large span and with their upper bound (for the anti-inflammatory associations) and lower bound (for the pro-inflammatory associations) very close to 0. This suggests that, the associations close to the significance thresholds might be false positive.  
 
-## Food Groups
-
-```{r foodgroupscorr, include=F}
-
-# Calculate Partial Spearman CC
-food.groups.markrs.corr.obj<-partial_spearman_rho(Food_groups|biomarkers~ Metadata, adj.method = "TSBH")
-
-# Creating dataframe with results
-food.markrs.rho.ci<-food.groups.markrs.corr.obj$CI%>%
-  mutate(color=ifelse(p.value<0.05, "darkred", "grey60"),
-         alpha=ifelse(p.value<0.05, 0.8, 0.3),
-         labels=ifelse(p.value<0.05, pairs, ""))
-
-#save correlations dataframe
-save(food.markrs.rho.ci, file=here("data/Robjects/Food_groups_Corr_obj.RData"))
-
-```
-
-```{r corrfoodplot, echo=FALSE, fig.width = 10,fig.fullwidth =T}
-
-# Creating a volcano plot to visualise the results
-ggplot(food.markrs.rho.ci, aes(rho, -log(p.value), color=color, alpha=alpha))+
-  annotate(geom = "rect",xmin=-Inf, xmax=0, ymin=-log(0.05), ymax=Inf, fill="forestgreen", alpha=0.25)+# creating the red area in the plot
-  annotate(geom = "label",x=-0.25, y=8, label="Anti-Inflammatory",fill="forestgreen", alpha=0.2)+# adding the area label
-  annotate(geom = "rect",xmin=0, xmax=Inf, ymin=-log(0.05), ymax=Inf, fill="darkred", alpha=0.2)+# creating the green area in the plot
-  annotate(geom = "label",x=0.25, y=8, label="Pro-Inflammatory",fill="darkred", alpha=0.2)+# adding the area label
-  annotate(geom = "rect",xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=-log(0.05), fill="gray40", alpha=0.2)+
-  xlab("Spearman's rho")+
-  ylab("-ln(unadjusted p-value)")+
-  geom_pointrange(aes(xmin = CI_low, xmax = CI_up),stroke=0, size=0.75)+
-  geom_hline(yintercept = -log(0.05), linetype="dashed", color="black")+
-  geom_vline(xintercept = 0, linetype="dashed", color="black")+
-  scale_color_identity()+
-  scale_alpha_identity()+
-  geom_label_repel(aes(label=labels))+
-  theme_minimal()+
-  ggtitle("Food groups VS. Inflammatory markers")
-```
-
-In terms of negative **anti-inflammatory** correlations we observe an association between:
-
-- Alcoholic beverages with TNFa
-- Red meat and offal with Z-score
-
-The anti-inflammatory effect of alcohol consumption (in moderate amounts) is well known in the literature and reflected in the paper where the aDII was introduced. In this paper the inflammatory potential of alcohol is negative, meaning an anti-inflammatory effect. While the negative correlation of red meat and offal consumption, although above the threshold of significance, it should be interpreted with caution for the reasons explained in the note.
-
-On the other hand we observe the **pro-inflammatory** effect of:
-
-- Sweetened beverages and SAA
-- Animal fat and IL6
-- Oily fish with ICAM1
-
-**Note:**
-The same caution introduced in the previous plot should be applied here. For correlations with significant p-values but very close to its alpha of 0.05, more attention should be given to the confidence intervals and if their upper or lower bound is very close to 0.
-
-
 ## ADII
 
 ```{r adiicorr, include=F}
@@ -256,6 +200,10 @@ Interestingly, the overall aDII score is positively correlated with IL-6 levels.
 Here, the only result against expectations is the aDII score for saturated fat consumption.
 
 The  **pro-inflammatory** effect of iron and vitamin B12 is expected given their inflammatory score of 0.032 and 0.106 respectively.
+
+**Note:**
+The same caution introduced in the previous plot should be applied here. For correlations with significant p-values but very close to its alpha of 0.05, more attention should be given to the confidence intervals and if their upper or lower bound is very close to 0.
+
 
 # Results Discussion
 
