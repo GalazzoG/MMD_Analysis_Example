@@ -1,0 +1,264 @@
+---
+title: "Correlations between nutrition and low-grande inflammation"
+author: "Gianluca Galazzo"
+date: "2024-08-04"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+
+# Introduction
+
+In this section we correlate the overall zscore and its components (already zscored and energy adjusted) with the nutrients, food groups and aDII. The plots below are based on the partial Spearman's correlation coefficients (pSCC) and their respective (unadjusted) p-values. 
+The reason we chose the pSCC is because it allows to calculate the correlation between variables while removing the effect of known confounders. 
+In this case we adjusted for *Age*, *Gender*, *BMI* and *total Kcal* intake (with the exception of the correlations with aDII because is already adjusted for total kcal intake), in this way the make sure that the statistically significant correlation we observe are due to what has been eater rather than how much. Moreover this approach adjust for potential unobserved differences such as different levels of physical activity between obese and non-obese.
+
+
+In this plots on the x-axis we have the Spearman's rho and on the y-axis the negative logarithm of the p-value.Each point represent the relationship between a dietary element and an inflammatory biomarker, the lines associated with each point represent the confidence interval of rho, and the horizontal dashed black line represent the significance threshold.
+So if a comparison has a p-value below 0.05 it will be above the horizontal line and into the green area and the strength of the correlation will determine how far from the center the point will be.
+
+```{r env prep, include=FALSE}
+# Define a character vector with the names of libraries to be used in the analysis
+lib.list<-c(   "dplyr",   
+               "reshape2",   
+               "vegan",   
+               "ggplot2",   
+               "ggsci",   
+               "ggrepel",   
+               "gridExtra",
+               "readxl",
+               "ggnewscale",
+               "summarytools",
+               "GGally",
+               "here")
+
+# Use lapply to load each library in the list
+# character.only = TRUE allows the function to accept the library names as character strings
+lapply(lib.list,library,character.only = TRUE)
+
+# Source additional R scripts containing custom functions or settings
+# The 'here' function is used to easily build paths for sourcing files
+# This makes the file paths relative to a designated project directory
+source(here("../Utils/Utility_functions_updated.R")) # Utility functions
+```
+
+```{r load data, include=FALSE}
+
+load(here("data/Dietary_Object.RData"))
+load(here("data/biomarkers.RData"))
+load(here("data/Metadata.RData"))
+
+```
+
+```{r R objects preparation, include=F}
+
+# Metadata
+Metadata<-Metadata%>%
+  tibble::column_to_rownames("SubjectID")%>% #moving the column SubjectID to the rownames of the dataframe
+  arrange(row.names(.)) #sorting subject IDs order for consistency across dataframes
+
+# Biomarkers
+biomarkers<-biomarkers%>%
+  arrange(row.names(.))
+
+# Nutrients
+Nutrients<-Dietary.Object$daily_qty%>%
+  arrange(row.names(.)) 
+
+# Food Groups
+Food_groups<-Dietary.Object$daily_foodgroup_qty%>%
+  arrange(row.names(.)) 
+
+# ADII
+ADII<-Dietary.Object$ADII%>%
+  arrange(row.names(.)) 
+
+rm(Dietary.Object)
+
+```
+
+# Results {.tabset}
+
+## Nutrients
+
+```{r nutrients, include=F}
+
+# Preparing the nutrients dataframe by ensuring the same order of subjects ID, fixing issues due to variable names and removing unused variables
+nutrients.cor<-Nutrients%>%
+  select(-nutr_kcal)%>% # Nutrient specific kcal are removed because the partial-Spearman CC already corrects for the total Kcal intake
+  dplyr::rename("nutr_flavan_3_ol"="nutr_flavan-3-ol") # correction of the name to avoid errors due to the hyphen
+
+# Calculate Partial Spearman CC
+nutrients.markrs.corr.obj<-partial_spearman_rho(nutrients.cor|biomarkers~ Metadata, adj.method = "TSBH")
+
+# Creating dataframe with results
+nutrients.markrs.rho.ci<-nutrients.markrs.corr.obj$CI%>% # Extracting the CI, p-values, and adjusted p-values
+  mutate(
+    color=ifelse(p.value<0.05, "darkred", "grey60"),
+    alpha=ifelse(p.value<0.05, 0.8, 0.3),
+    labels=ifelse(p.value<0.05, pairs, "")) # Creating column to be used for the plot
+
+# Save fixed nutrients and correlations dataframes
+save(nutrients.cor, file=here("data/Robjects/Nutrients_ready.RData"))
+save(nutrients.markrs.rho.ci, file=here("data/Robjects/Nutrients_Corr_obj.RData"))
+```
+
+In the volcano plot below:
+
+- The x-axis display the values of the partial-Spearman's rho.
+- The y-axis display the negative logarithm of the p-values (not adjusted).
+- Each point represent a pairwise comparison between a nutrient and a log-transformed-zscored biomarker or the overall inflammatory zscore.
+- the bars represent the 95% confidence interval of the partial-Spearman's rho.
+
+```{r nutrcorrplot, echo=FALSE, fig.width = 10,fig.fullwidth =T, warning=F}
+
+# Creating a volcano plot to visualise the results
+ggplot(nutrients.markrs.rho.ci, aes(rho, -log(p.value), color=color, alpha=alpha))+
+  annotate(geom = "rect",xmin=-Inf, xmax=0, ymin=-log(0.05), ymax=Inf, fill="forestgreen", alpha=0.25)+
+  annotate(geom = "label",x=-0.25, y=8, label="Anti-Inflammatory",fill="forestgreen", alpha=0.2)+
+  annotate(geom = "rect",xmin=0, xmax=Inf, ymin=-log(0.05), ymax=Inf, fill="darkred", alpha=0.2)+
+  annotate(geom = "label",x=0.25, y=8, label="Pro-Inflammatory",fill="darkred", alpha=0.2)+
+  annotate(geom = "rect",xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=-log(0.05), fill="gray40", alpha=0.2)+
+  xlab("Spearman's rho")+
+  ylab("-ln(unadjusted p-value)")+
+  geom_pointrange(aes(xmin = CI_low, xmax = CI_up),stroke=0, size=0.75)+
+  geom_hline(yintercept = -log(0.05), linetype="dashed", color="black")+
+  geom_vline(xintercept = 0, linetype="dashed", color="black")+
+  scale_color_identity()+
+  scale_alpha_identity()+
+  geom_label_repel(aes(label=labels), size=3.5,max.overlaps = 20)+
+  theme_minimal()+
+  ggtitle("Nutrients VS. Inflammatory markers")
+```
+
+Looking at the single nutrient intake we see many nutrients **usually** associated with fruit and vegetables intake being **negatively associated** with several biomarkers (IL6, IL8, TNFa, and CRP).
+
+On the **pro-inflammatory** side we can see that the intake of saturated fats increases the levels of ICAM1.
+
+**Note on the correlations very close to the significance threshold:**
+
+In general for all the volcano plots displayed in this report we should keep in mind that:
+
+- The small sample size of the dataset and its imbalance in the number of subjects per group, calls for caution when evaluating the p-values close to the threshold of significance. In these cases is often advised to rely more in the confidence interval more reliable than the p-values.
+- The 95% confidence interval for the rho coefficients has a very large span and with their upper bound (for the anti-inflammatory associations) and lower bound (for the pro-inflammatory associations) very close to 0. This suggests that, the associations close to the significance thresholds might be false positive.  
+
+## Food Groups
+
+```{r foodgroupscorr, include=F}
+
+# Calculate Partial Spearman CC
+food.groups.markrs.corr.obj<-partial_spearman_rho(Food_groups|biomarkers~ Metadata, adj.method = "TSBH")
+
+# Creating dataframe with results
+food.markrs.rho.ci<-food.groups.markrs.corr.obj$CI%>%
+  mutate(color=ifelse(p.value<0.05, "darkred", "grey60"),
+         alpha=ifelse(p.value<0.05, 0.8, 0.3),
+         labels=ifelse(p.value<0.05, pairs, ""))
+
+#save correlations dataframe
+save(food.markrs.rho.ci, file=here("data/Robjects/Food_groups_Corr_obj.RData"))
+
+```
+
+```{r corrfoodplot, echo=FALSE, fig.width = 10,fig.fullwidth =T}
+
+# Creating a volcano plot to visualise the results
+ggplot(food.markrs.rho.ci, aes(rho, -log(p.value), color=color, alpha=alpha))+
+  annotate(geom = "rect",xmin=-Inf, xmax=0, ymin=-log(0.05), ymax=Inf, fill="forestgreen", alpha=0.25)+# creating the red area in the plot
+  annotate(geom = "label",x=-0.25, y=8, label="Anti-Inflammatory",fill="forestgreen", alpha=0.2)+# adding the area label
+  annotate(geom = "rect",xmin=0, xmax=Inf, ymin=-log(0.05), ymax=Inf, fill="darkred", alpha=0.2)+# creating the green area in the plot
+  annotate(geom = "label",x=0.25, y=8, label="Pro-Inflammatory",fill="darkred", alpha=0.2)+# adding the area label
+  annotate(geom = "rect",xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=-log(0.05), fill="gray40", alpha=0.2)+
+  xlab("Spearman's rho")+
+  ylab("-ln(unadjusted p-value)")+
+  geom_pointrange(aes(xmin = CI_low, xmax = CI_up),stroke=0, size=0.75)+
+  geom_hline(yintercept = -log(0.05), linetype="dashed", color="black")+
+  geom_vline(xintercept = 0, linetype="dashed", color="black")+
+  scale_color_identity()+
+  scale_alpha_identity()+
+  geom_label_repel(aes(label=labels))+
+  theme_minimal()+
+  ggtitle("Food groups VS. Inflammatory markers")
+```
+
+In terms of negative **anti-inflammatory** correlations we observe an association between:
+
+- Alcoholic beverages with TNFa
+- Red meat and offal with Z-score
+
+The anti-inflammatory effect of alcohol consumption (in moderate amounts) is well known in the literature and reflected in the paper where the aDII was introduced. In this paper the inflammatory potential of alcohol is negative, meaning an anti-inflammatory effect. While the negative correlation of red meat and offal consumption, although above the threshold of significance, it should be interpreted with caution for the reasons explained in the note.
+
+On the other hand we observe the **pro-inflammatory** effect of:
+
+- Sweetened beverages and SAA
+- Animal fat and IL6
+- Oily fish with ICAM1
+
+**Note:**
+The same caution introduced in the previous plot should be applied here. For correlations with significant p-values but very close to its alpha of 0.05, more attention should be given to the confidence intervals and if their upper or lower bound is very close to 0.
+
+
+## ADII
+
+```{r adiicorr, include=F}
+
+# Preparing the aDII dataframe by ensuring the same order of subjects ID and fixing issues due to variable names
+ADII.cor<-ADII%>%
+  dplyr::rename("adii_flavan_3_ol"="adii_flavan-3-ol")
+
+# Removing the total kcal intake from the metadata. The aDII score and its components are already adjusted for total kcal intake.
+Metadata.adii<-Metadata%>%
+  select(-Total_kcal)
+
+# Calculate Partial Spearman CC
+ADII.markrs.corr.obj<-partial_spearman_rho(ADII.cor|biomarkers~ Metadata.adii, adj.method = "TSBH")
+
+# Creating dataframe with results
+ADII.markrs.rho.ci<-ADII.markrs.corr.obj$CI%>%mutate(color=ifelse(p.value<0.05, "darkred", "grey60"),alpha=ifelse(p.value<0.05, 0.8, 0.3),labels=ifelse(p.value<0.05, pairs, ""))
+
+# Save fixed aDII dataframe
+save(ADII.cor, file=here("data/Robjects/ADII_ready.RData"))
+save(ADII.markrs.rho.ci, file=here("data/Robjects/ADII_Corr_obj.RData"))
+
+```
+
+With this analysis we aim to explore directly the inflammatory effect of the diet, as measured by the aDII and its components to the inflammatory zscore and its biomarker components.
+
+**Important Note:** In this analysis the single components of the aDII score have been adjusted for total kcal intake and multiplied by their respective inflammatory index. This means that a **high (or highly positive) score is pro-inflammatory** and a **low (or highly negative) score is anti-inflammatory**. More generally, a positive correlation of an item can be as that item having an anti-inflammatory effect and vice-versa a negative correlation having a pro-inflammatory effect.
+
+This interpretation applies to the overall aDII score as well.
+
+```{r corradiiplot, echo=FALSE, fig.width = 10,fig.fullwidth =T}
+
+# Creating a volcano plot to visualise the results
+ggplot(ADII.markrs.rho.ci, aes(rho, -log(p.value), color=color, alpha=alpha))+
+  annotate(geom = "rect",xmin=-Inf, xmax=0, ymin=-log(0.05), ymax=Inf, fill="darkred", alpha=0.25)+ # creating the red area in the plot
+  annotate(geom = "label",x=-0.25, y=8, label="Pro-Inflammatory",fill="darkred", alpha=0.2)+ # adding the area label
+  annotate(geom = "rect",xmin=0, xmax=Inf, ymin=-log(0.05), ymax=Inf, fill="forestgreen", alpha=0.2)+ # creating the green area in the plot
+  annotate(geom = "label",x=0.25, y=8, label="Anti-Inflammatory",fill="forestgreen", alpha=0.2)+ # adding the area label
+  xlab("Spearman's rho")+
+  ylab("-ln(unadjusted p-value)")+
+  geom_pointrange(aes(xmin = CI_low, xmax = CI_up),stroke=0, size=0.75)+ # adding the confidence interval lines
+  geom_hline(yintercept = -log(0.05), linetype="dashed", color="black")+ # highlighting the significance threshold
+  geom_vline(xintercept = 0, linetype="dashed", color="black")+ # highlighting the y-axis
+  scale_color_identity()+
+  scale_alpha_identity()+
+  geom_label_repel(aes(label=labels), max.overlaps = Inf)+ #adding the description to the points
+  theme_minimal()+
+  ggtitle("ADII VS. Inflammatory markers")
+```
+
+Right away we can observe similar results as in the previous correlations. Many of the aDII scores associated with fruits and vegetables intake show an **anti-inflammatory** effect on several inflammatory biomarkers. 
+
+Interestingly, the overall aDII score is positively correlated with IL-6 levels. 
+
+Here, the only result against expectations is the aDII score for saturated fat consumption.
+
+The  **pro-inflammatory** effect of iron and vitamin B12 is expected given their inflammatory score of 0.032 and 0.106 respectively.
+
+# Results Discussion
+
+In general, several associations between nutrient intake (and/or their inflammatory potential) and single inflammatory biomarkers can be observed. regarding the overall scores, only the aDII was associated with IL-6 levels, and the inflammatory Z-score was associated with alcohol and anthocyanidin intake.
+
+To further explore and potentially validate these results, the next section presents the outcomes of linear models based on a selection of the associations identified here.
