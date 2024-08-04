@@ -1,0 +1,287 @@
+---
+title: "Regression Models"
+author: "Gianluca Galazzo"
+date: "2024-08-04"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+# Introduction
+
+In this section, we investigate in more details the correlations observed in the previous section. The regression models presented here aim to acquire a deeper understanding of the impact of dietary nutrients on low-grade inflammation markers. Finally, we will directly test how much the levels of low-grade inflammation, measured as the **Inflammatory Z-score**, are affected by the alternate dietary Inflammatory Index (aDII) score, which measures its inflammatory "potential."
+
+# Relationship between nutrients and inflammatory markers {.tabset}
+
+Plotting the different variables against one another is a good way to see what we can expect from the models, and is useful to see if and how we need to pre-process the data before performing a regression.
+```{r env prep, include=FALSE}
+# Define a character vector with the names of libraries to be used in the analysis
+lib.list<-c(   "dplyr",   
+               "reshape2",   
+               "vegan",   
+               "ggplot2",   
+               "ggsci",   
+               "ggrepel",   
+               "gridExtra",
+               "readxl",
+               "ggnewscale",
+               "summarytools",
+               "GGally",
+               "here")
+
+# Use lapply to load each library in the list
+# character.only = TRUE allows the function to accept the library names as character strings
+lapply(lib.list,library,character.only = TRUE)
+
+# Source additional R scripts containing custom functions or settings
+# The 'here' function is used to easily build paths for sourcing files
+# This makes the file paths relative to a designated project directory
+source(here("../Utils/Utility_functions_updated.R")) # Utility functions
+```
+
+```{r load data, include=FALSE}
+
+load(here("data/Dietary_Object.RData")) 
+load(here("data/biomarkers.RData"))
+load(here("data/Metadata.RData"))
+load(here("data/Robjects/Nutrients_ready.RData"))
+load(here("data/Robjects/ADII_ready.RData"))
+load(here("data/Robjects/ADII_Corr_obj.RData")) # ADII correlations dataframe
+load(here("data/Robjects/Nutrients_Corr_obj.RData")) # Nutrients correlations dataframe
+load(here("data/Robjects/Food_groups_Corr_obj.RData")) # Food groups correlations dataframe
+
+```
+
+```{r R objects preparation, include=F}
+
+# Metadata
+Metadata<-Metadata%>%
+  tibble::column_to_rownames("SubjectID")%>% #moving the column SubjectID to the rownames of the dataframe
+  arrange(row.names(.)) #sorting subject IDs order for consistency across dataframes
+
+# Biomarkers
+biomarkers<-biomarkers%>%
+  arrange(row.names(.))
+
+# Food Groups
+Food_groups<-Dietary.Object$daily_foodgroup_qty%>%
+  arrange(row.names(.)) 
+
+rm(Dietary.Object)
+
+```
+
+## Pairwise relationships {.tabset}
+
+The plot below summarise the pairwise relationships between the intake of nutrients identified in the correlation analysis and the inflammatory markers. 
+
+The lower half display scatterplots, the upper half display the Spearman's correlation coefficient together with the star-coded unadjusted statistical significance.Finally, the diagonal shows the probability density function of the values of the variable.
+
+```{r overviewprepnutr, include=F}
+# Extracting the names of the nutrients that had an unadjusted pvalue below 0.05 
+nutr.of.interest<-nutrients.markrs.rho.ci%>%
+  mutate(labels=sub("_[^_]+$", "", labels))%>% #r emoving the last element of the label representing the biomarker
+  filter(p.value<0.05)%>% #subsetting the dataframe to maintain only the associations with a pvalue below 0.05
+  pull(labels) # extracting only the content of the column label
+
+# Retaining only the data from the nutrients of interest
+nutrients.filt<-nutrients.cor%>%
+  select(all_of(nutr.of.interest))
+
+# Creating a combine dataframe with nutrients, biomarkers, and the zscore
+nutr.pairs.df<-merge(nutrients.filt,biomarkers,by=0)%>%
+  tibble::column_to_rownames("Row.names")
+
+```
+
+###  Unadjusted for confounders
+
+```{r ggpairs1, echo=FALSE, fig.width = 10,fig.fullwidth =T,warning=F}
+ggpairs(nutr.pairs.df,upper=list(continuous=wrap("cor", method = "spearman")))
+```
+
+Looking only at the scatter plots of the nutrient intake against the inflammation markers we cannot see clear trends.
+
+```{r overviewprep, include=F,warning=F}
+
+# Replacing the single missing value  for BMI the metadata dataframe with the average of the population
+Metadata[is.na(Metadata$BMI_C), "BMI_C"]<-mean(Metadata$BMI_C,na.rm = T)
+
+# Creating a combine dataframe with nutrients, biomarkers, and the zscore and deconfounding the values using the residuals method
+nutr.pairs.adj.df<-merge(nutrients.filt,biomarkers,by=0)%>%
+  tibble::column_to_rownames("Row.names")%>%
+  mutate(across(everything(), ~ { 
+    model <- lm(. ~ AGE + GENDER + BMI_C + Total_kcal, data = Metadata) # create a linear model to predict each variable in the dataframe using the confounder variables
+    resid.tmp <- residuals(model) #extract the resilduals of the model
+    return(resid.tmp) 
+  }))
+```
+
+### Adjusted for confounders
+
+```{r ggpairs1adj, echo=FALSE, fig.width = 10,fig.fullwidth =T,warning=F}
+ggpairs(nutr.pairs.adj.df,upper=list(continuous=wrap("cor", method = "spearman")))
+```
+
+## Linear Models {.tabset}
+
+### Vitamin C and CRP
+
+```{r vitccrp, include=F,warning=F}
+
+# creating a dataframe with the unadjusted concentrations of dietary vitamin c intake and CRP and the metadata containing the confoudners
+vitc.crp.unadj<-merge(nutrients.cor%>%select(nutr_vitc), biomarkers%>%select(CRP), by=0)%>%
+  merge(Metadata, by.x="Row.names", by.y=0)%>%
+  # mutate(resid_vitc=lm(nutr_vitc~AGE+GENDER+BMI_C+Total_kcal)$residuals, # adjusting the values of vitamin c by removing the effect of the confounders
+  #        resid_crp=lm(CRP~AGE+GENDER+BMI_C+Total_kcal)$residuals)%>% # adjusting the values of CRP by removing the effect of the confounders
+  mutate(rank_vitc=rank(nutr_vitc),rank_crp=rank(CRP))%>% # taking the ranks of the unadjusted vitamin c and CRP values to mimic the Spearman CC
+  tibble::column_to_rownames("Row.names")
+
+# creating a dataframe with the inflammatory value of dietary vitamin c intake and CRP zscored and adjusted for total kcal and the metadata containing the confoudners
+vitc.crp.adj<-merge(nutrients.cor%>%select(nutr_vitc), biomarkers%>%select(CRP), by=0)%>%
+  #merge(ADII.cor%>%select(adii_vitc), biomarkers%>%select(CRP),by=0)%>%
+  merge(Metadata, by.x="Row.names", by.y=0)%>%
+  mutate(resid_vitc=lm(nutr_vitc~AGE+GENDER+BMI_C+Total_kcal)$residuals, # adjusting the values of vitamin c by removing the effect of the confounders
+         resid_crp=lm(CRP~AGE+GENDER+BMI_C+Total_kcal)$residuals)%>% # adjusting the values of CRP by removing the effect of the confounders
+  mutate(rank_vitc=rank(resid_vitc),rank_crp=rank(resid_crp))%>% # taking the ranks of the adjusted vitamin c and CRP values to mimic the Spearman CC
+  tibble::column_to_rownames("Row.names")
+```
+
+```{r, echo=FALSE, fig.width = 10,fig.fullwidth =T,warning=F}
+
+# creating a scatterplot with regression line of the unadjusted values for vitamin c and CRP
+ggplot(vitc.crp.unadj, aes(rank_vitc,rank_crp))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  xlab("Ranked Vitamin C Conc.")+
+  ylab("Ranked CRP Conc.")+
+  theme_minimal()+
+  ggtitle("Rank of raw values")
+
+# creating a scatterplot with regression line of the energy adjusted values for vitamin c inflammatory potential and CRP
+ggplot(vitc.crp.adj, aes(rank_vitc,rank_crp))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  xlab("Ranked Vitamin C Inflammatory Potential")+
+  ylab("Ranked CRP Conc.")+
+  theme_minimal()+
+  ggtitle("Rank of values adjusted for Age, Gender, BMI, and Total Kcal Intake")
+```
+
+# Relationship between aDII and inflammatory markers {.tabset}
+
+## Pairwise relationships {.tabset}
+
+```{r overviewprepadii, include=F}
+# Extracting the names of the adii components that had an unadjusted pvalue below 0.05 
+adii.of.interest<-ADII.markrs.rho.ci%>%
+  mutate(labels=sub("_[^_]+$", "", labels))%>% #r emoving the last element of the label representing the biomarker
+  filter(p.value<0.05)%>% #subsetting the dataframe to maintain only the associations with a pvalue below 0.05
+  pull(labels) # extracting only the content of the column label
+
+# Retaining only the data from the adii components of interest
+adii.filt<-ADII.cor%>%
+  select(all_of(adii.of.interest))
+
+# Creating a combine dataframe with adii components, biomarkers, and the zscore
+adii.pairs.df<-merge(adii.filt,biomarkers,by=0)%>%
+  tibble::column_to_rownames("Row.names")
+
+```
+
+###  Unadjusted for confounders
+
+```{r ggpairs3, echo=FALSE, fig.width = 10,fig.fullwidth =T,warning=F}
+ggpairs(adii.pairs.df,upper=list(continuous=wrap("cor", method = "spearman")))
+```
+
+As for the previous panel, an observation of the scatter plots of the aDII score and its components against the inflammation markers does not reveal any clear trend.
+
+```{r overviewprepadiiadj, include=F,warning=F}
+
+# Creating a combine dataframe with components, biomarkers, and the zscore and deconfounding the values using the residuals method
+adii.pairs.adj.df<-merge(adii.filt,biomarkers,by=0)%>%
+  tibble::column_to_rownames("Row.names")%>%
+  mutate(across(everything(), ~ { 
+    model <- lm(. ~ AGE + GENDER + BMI_C + Total_kcal, data = Metadata) # create a linear model to predict each variable in the dataframe using the confounder variables
+    resid.tmp <- residuals(model) #extract the resilduals of the model
+    return(resid.tmp) 
+  }))
+```
+
+### Adjusted for confounders
+
+```{r ggpairs3adj, echo=FALSE, fig.width = 10,fig.fullwidth =T,warning=F}
+ggpairs(adii.pairs.adj.df,upper=list(continuous=wrap("cor", method = "spearman")))
+```
+
+## Linear Models {.tabset}
+
+### Iron and IL6
+
+```{r ironil6adii, include=F,warning=F}
+
+# creating a dataframe with the unadjusted adii score for iron intake and IL6 and the metadata containing the confounders
+iron.il6.unadj<-merge(ADII.cor%>%select(adii_fe), biomarkers%>%select(IL6), by=0)%>%
+  merge(Metadata, by.x="Row.names", by.y=0)%>%
+  mutate(rank_fe=rank(adii_fe),rank_il6=rank(IL6))%>% # taking the ranks of the unadjusted values to mimic the Spearman CC
+  tibble::column_to_rownames("Row.names")
+
+# creating a dataframe with the inflammatory value of iron inflammatory potential and IL6 zscored and adjusted for total kcal (only IL6, since the adii score for iron intake is already adjusted for total kcal) and the metadata containing the confounders
+iron.il6.adj<-merge(ADII.cor%>%select(adii_fe), biomarkers%>%select(IL6),by=0)%>%
+  merge(Metadata, by.x="Row.names", by.y=0)%>%
+  mutate(resid_fe=lm(adii_fe~AGE+GENDER+BMI_C)$residuals, # adjusting the values of iron by removing the effect of the confounders
+         resid_il6=lm(IL6~AGE+GENDER+BMI_C+Total_kcal)$residuals)%>% # adjusting the values of il6 by removing the effect of the confounders
+  mutate(rank_fe=rank(resid_fe),rank_il6=rank(resid_il6))%>% # taking the ranks of the adjusted values to mimic the Spearman CC
+  tibble::column_to_rownames("Row.names")
+```
+
+```{r, echo=FALSE, fig.width = 10,fig.fullwidth =T,warning=F}
+
+# creating a scatterplot with regression line of the unadjusted values for saturated fat and ICAM1
+ggplot(iron.il6.unadj, aes(rank_fe,rank_il6))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  xlab("Ranked aDII score for Iron")+
+  ylab("Ranked IL-6 Conc.")+
+  theme_minimal()+
+  ggtitle("Rank of raw values")
+
+# creating a scatterplot with regression line of the energy adjusted values for saturated fat inflammatory potential and ICAM
+ggplot(iron.il6.adj, aes(rank_fe,rank_il6))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  xlab("Ranked aDII score for Iron adjusted")+
+  ylab("Ranked IL-6 Conc.")+
+  theme_minimal()+
+  ggtitle("Rank of values adjusted for Age, Gender, BMI, and Total Kcal Intake (IL-6 only)")
+```
+
+# Effect of the inflammatory potential of the diet on low grade inflammation
+
+```{r adiizscore, include=F, warning=F}
+#creating a dataframe containing the overall aDII score of a subject's diet, their zscore values and the confounders
+adii.zscore.df<-merge(ADII.cor%>%select(ADII_score),biomarkers%>%select(zscore), by=0)%>%
+  merge(Metadata, by.x="Row.names", by.y=0)
+
+#The simple model to predict the zscore using only the confounding variables
+simple.model<-lm(zscore~AGE+GENDER+BMI_C+Total_kcal, adii.zscore.df)
+
+#this model include also the aDII score together with the confounding variables
+full.model<-lm(zscore~ADII_score+AGE+GENDER+BMI_C+Total_kcal, adii.zscore.df) #We can include the total kcal here because the ADII score has its effect already removed and therefore we are not adjusting twice
+
+#Printing the summary of the full model to show the model coefficents
+summary(full.model)
+
+#extracting the variance explained by adding the ADII score into the simple model
+ADII.variance.explained<-(summary(full.model)$r.squared-summary(simple.model)$r.squared)*100
+```
+
+```{r adiitabreg, echo=F, message=T}
+
+#Testing if the addition of the ADII score improves the simple model
+anova(simple.model, full.model)
+
+#Printing a message with the percentage of variance explained by the ADII score
+message(paste0("Adding the ADII score to the model explain ", round(ADII.variance.explained, 2), "% of the zscore variability"))
+```
