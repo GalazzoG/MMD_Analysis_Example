@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Gianluca Galazzo" />
 
+<meta name="date" content="2024-08-04" />
 
-<title>Table of Content</title>
+<title>Conclusions &amp; Future Steps</title>
 
 <script src="site_libs/header-attrs-2.27/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +31,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -229,6 +234,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -236,6 +304,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -270,7 +348,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Table of Content</h1>
+<h1 class="title toc-ignore">Conclusions &amp; Future Steps</h1>
+<h4 class="author">Gianluca Galazzo</h4>
+<h4 class="date">2024-08-04</h4>
 
 </div>
 
@@ -403,10 +483,11 @@ have uncommitted changes.
 
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML
-(<code>docs/index.html</code>) files. If you’ve configured a remote Git
-repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
-in the table below to view the files as they were in that past version.
+made to the R Markdown (<code>analysis/conclusion.Rmd</code>) and HTML
+(<code>docs/conclusion.html</code>) files. If you’ve configured a remote
+Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -447,210 +528,6 @@ GGalazzoIP
 wflow_publish("analysis/index.Rmd")
 </td>
 </tr>
-<tr>
-<td>
-html
-</td>
-<td>
-dfadbc3
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-a1658e0
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-413cc2e
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-analysis/conclusion.Rmd
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-af13395
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-852171c
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-wflow_publish("analysis/index.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-b62ab85
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-e7963f8
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-c034d27
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-wflow_publish("analysis/index.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-13a0085
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-e23c484
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-wflow_publish("analysis/index.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-1dd1e38
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-23d57cd
-</td>
-<td>
-GGalazzoIP
-</td>
-<td>
-2024-08-04
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -658,13 +535,22 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<ul>
-<li><a href="modifications.html">About this report</a></li>
-<li><a href="Correlations_Nutrition_Inflammation.html">Correlation
-between diet and inflammatory biomarkers</a></li>
-<li><a href="linear_models.html">Regression Models</a></li>
-<li><a href="conclusion.html">Conclusions &amp; Future Steps</a></li>
-</ul>
+<div id="conclusions" class="section level1">
+<h1>Conclusions</h1>
+<p>The findings presented in this report are aligned with the
+expectetions set by the existing literature. However, the wide range of
+the confidence intervals and their closeness to zero, both for the
+correlation and regression slopes, indicate that these results might be
+false positives.</p>
+</div>
+<div id="future-steps" class="section level1">
+<h1>Future Steps</h1>
+<p>Given the results obtained, the following steps are recommended:</p>
+<p>Do not repeat the analysis after the second batch of samples is
+ready. Instead, is advised to use this dataset to perform a power
+calculation to identify the correct sample size before repeating the
+analysis.</p>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -682,6 +568,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -714,6 +602,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
