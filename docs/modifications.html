@@ -13,7 +13,7 @@
 
 <meta name="date" content="2024-08-04" />
 
-<title>Report Modifications</title>
+<title>This section includes information about the modifications made to the original report and the original dataset</title>
 
 <script src="site_libs/header-attrs-2.27/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -334,7 +334,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="dataset_summary.html">Dataset</a>
+  <a href="modifications.html">About this report</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -348,7 +348,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Report Modifications</h1>
+<h1 class="title toc-ignore">This section includes information about the
+modifications made to the original report and the original dataset</h1>
 <h4 class="author">Gianluca Galazzo</h4>
 <h4 class="date">2024-08-04</h4>
 
@@ -379,7 +380,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-08-04
+<strong>Last updated:</strong> 2024-08-05
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -426,13 +427,13 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong1e39a46">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong506118e">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 1e39a46
+aria-hidden="true"></span> <strong>Repository version:</strong> 506118e
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong1e39a46"
+<div id="strongRepositoryversionstrong506118e"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -441,7 +442,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 1e39a46.
+The results in this page were generated with repository version 506118e.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -456,16 +457,24 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
 
 Untracked files:
+    Untracked:  README.html
+    Untracked:  code/Utility_functions.R
     Untracked:  data/Dietary_Object.RData
     Untracked:  data/Metadata.RData
     Untracked:  data/Robjects/
     Untracked:  data/biomarkers.RData
 
 Unstaged changes:
+    Modified:   README.md
+    Modified:   analysis/Correlations_Nutrition_Inflammation.Rmd
     Modified:   analysis/_site.yml
+    Deleted:    analysis/about.Rmd
+    Modified:   analysis/linear_models.Rmd
+    Deleted:    output/README.md
 
 </code></pre>
 <p>
@@ -516,6 +525,40 @@ Message
 Rmd
 </td>
 <td>
+506118e
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-05
+</td>
+<td>
+wflow_publish("analysis/modifications.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+259eb89
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 1e39a46
 </td>
 <td>
@@ -535,21 +578,22 @@ wflow_publish("analysis/index.Rmd")
 </div>
 </div>
 </div>
-<p>This section include a description of how this report and the data
-used in it, have been modified from their original form.</p>
-<div id="the-origal-report" class="section level1">
-<h1>The origal report</h1>
-<p>preliminary investigation contained many more results and sections
-reduced to meet the interview requirements.</p>
+<div id="modification-to-the-original-report" class="section level3">
+<h3>Modification to the original report</h3>
+<p>The original report contained an extensive set of analyses intended
+to investigate the effect of nutrition on metabolic health and clinical
+phenotypes. These analysis used proprietary scripts and functions as
+well as custom indexes which could not be shared. It has been reduced in
+size to protect the company’s IP and to meet the interview
+requirements.</p>
 </div>
-<div id="the-original-dataset" class="section level1">
-<h1>The original dataset</h1>
-<p>Not detailed scope of the original study anonimisaion of the labels
-and shuffling of the clinical groups</p>
-</div>
-<div id="important-notes" class="section level1">
-<h1>Important notes</h1>
-<p>the way the adii was calculated cannot be showed,</p>
+<div id="modification-to-the-original-dataset" class="section level3">
+<h3>Modification to the original dataset</h3>
+<p>For the same reasons, the dataset has been limited to the smallest
+necessary size that still allows for the analysis to be conducted
+effectively. As additional protection, new, random subjects IDs were
+created and the clinical group labels randomly shuffled. For details
+about the dataset content see</p>
 </div>
 
 
