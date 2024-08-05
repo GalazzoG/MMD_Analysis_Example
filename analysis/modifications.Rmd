@@ -1,5 +1,5 @@
 ---
-title: "Report Modifications"
+title: "This section includes information about the modifications made to the original report and the original dataset"
 author: "Gianluca Galazzo"
 date: "2024-08-04"
 output: workflowr::wflow_html
@@ -7,19 +7,14 @@ editor_options:
   chunk_output_type: console
 ---
 
-This section include a description of how this report and the data used in it, have been modified from their original form.
+### Modification to the original report
 
-# The origal report
+The original report contained an extensive set of analyses intended to investigate the effect of nutrition on metabolic health and clinical phenotypes. 
+These analysis used proprietary scripts and functions as well as custom indexes which could not be shared.
+It has been reduced in size to protect the company's IP and to meet the interview requirements. 
 
-preliminary investigation
-contained many more results and sections 
-reduced to meet the interview requirements.
+### Modification to the original dataset
 
-# The original dataset
-
-Not detailed scope of the original study
-anonimisaion of the labels and shuffling of the clinical groups
-
-# Important notes
-
-the way the adii was calculated cannot be showed,
+For the same reasons, the dataset has been limited to the smallest necessary size that still allows for the analysis to be conducted effectively.
+As additional protection, new, random subjects IDs were created and the clinical group labels randomly shuffled.
+For details about the dataset content see 
