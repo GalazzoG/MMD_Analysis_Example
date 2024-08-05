@@ -380,7 +380,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-08-04
+<strong>Last updated:</strong> 2024-08-05
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -427,13 +427,13 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong1e39a46">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong5bfb993">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 1e39a46
+aria-hidden="true"></span> <strong>Repository version:</strong> 5bfb993
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong1e39a46"
+<div id="strongRepositoryversionstrong5bfb993"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -442,7 +442,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 1e39a46.
+The results in this page were generated with repository version 5bfb993.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -457,16 +457,20 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
 
 Untracked files:
+    Untracked:  code/Utility_functions.R
     Untracked:  data/Dietary_Object.RData
     Untracked:  data/Metadata.RData
     Untracked:  data/Robjects/
     Untracked:  data/biomarkers.RData
 
 Unstaged changes:
+    Modified:   analysis/Correlations_Nutrition_Inflammation.Rmd
     Modified:   analysis/_site.yml
+    Modified:   analysis/linear_models.Rmd
 
 </code></pre>
 <p>
@@ -517,6 +521,40 @@ Message
 Rmd
 </td>
 <td>
+5bfb993
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-05
+</td>
+<td>
+wflow_publish("analysis/dataset_summary.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+259eb89
+</td>
+<td>
+GGalazzoIP
+</td>
+<td>
+2024-08-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 1e39a46
 </td>
 <td>
@@ -536,14 +574,65 @@ wflow_publish("analysis/index.Rmd")
 </div>
 </div>
 </div>
-<div id="origin" class="section level1">
-<h1>Origin</h1>
+<div id="origins" class="section level1">
+<h1>Origins</h1>
+<p>The dataset used in this report is part of the phase 2 of an ongoing
+clinical study aimed to study the onset of cardio-metabolic diseases.
+The phase 2 of the study is in its early stages and has recalled for a
+follow-up visit a total of 128 subjects. For these 128 subjects,
+extensive demographics data were collected in phase 1 and new, updated,
+measurements were collected in phase 2. The new measurements include,but
+are not limited to:</p>
+<ul>
+<li>anthropometric data (Weight, BMI, Waist circumference, etc.)</li>
+<li>fecal cytokines (IL-6, IL-8, CRP, etc.)</li>
+<li>food frequency questionnaires (FFQ)</li>
+</ul>
+<p>The goal of this project was to conduct a preliminary investigation
+on the impact of dietary habits on low-grade inflammation, assessed
+using a z-score derived from several inflammatory markers</p>
 </div>
 <div id="filtering" class="section level1">
 <h1>Filtering</h1>
+<p>Out of the initial 128 subjects, 30 were excluded due to incomplete
+FFQs, and another 14 were excluded because inflammatory marker data were
+unavailable, resulting in a final sample of 84 individuals.</p>
+<p>We then performed extensive sanity checks across all the data, to
+ensure:</p>
+<ul>
+<li>matching IDs between files</li>
+<li>the numerical variables to be within expected ranges</li>
+<li>the consistency of categorical and ordinal data</li>
+</ul>
+<p>Finally, to clean the data from wrongly reported food intake we
+filtered out subjects with a BMR/<code>total kcal declared</code> ratio
+below 0.5 and above 3.5.</p>
+<p>This left us with a total of 81 subjects.</p>
 </div>
 <div id="final-dataset" class="section level1">
 <h1>Final Dataset</h1>
+<p>The final dataset used here comprises of:</p>
+<ul>
+<li><em>Dietary.Object</em>: It contains 3 dietary index (aDII, aHEI,
+and DASH) and their components, a dataframe with the Nutrient intake in
+grams/day per each individual, and finally a dataframe with the daily
+intake in grams/day of several food groups (e.g., vegetables, red meat
+etc.) per each individual. To calculate the nutrients and the dietary
+index, the FFQ were processed using a custom built pipeline. Birefly,
+the pipeline first translate the informations in the FFQ into food items
+and their daily intake in grams, then it calculate the amount of each
+metabolite present in the food items and finally, the same nutrients
+from the different foods are summed up. The results of this process are
+the <em>daily_qty</em> and <em>daily_foodgroups_qty</em> which in turn
+are used to calculate the other dietary index via custom scripts.</li>
+<li><em>biomarkers</em>: It contains the cytokines data used to
+calculate the inflammatory z-score. Each marker has been already
+<strong>log-transformed</strong>, <strong>scaled</strong>, and
+<strong>centered</strong>. Finally the zscore is calculated as the sum
+of each cytokines z-score.</li>
+<li><em>Metadata</em>:It contains the subject’s data used to adjust the
+analysis for confounding factors.</li>
+</ul>
 </div>
 
 
