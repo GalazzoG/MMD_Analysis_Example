@@ -8,7 +8,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-- [About this report](modifications.html)
+- [Dataset description](dataset_summary.html)
 - [Correlation between diet and inflammatory biomarkers](Correlations_Nutrition_Inflammation.html)
 - [Regression Models](linear_models.html)
 - [Conclusions & Future Steps](conclusion.html)
