@@ -10,8 +10,10 @@ editor_options:
 
 # Introduction
 
-In this section we correlate the overall zscore and its components (already zscored and energy adjusted) with the nutrients, food groups and aDII. The plots below are based on the partial Spearman's correlation coefficients (pSCC) and their respective (unadjusted) p-values. 
-The reason we chose the pSCC is because it allows to calculate the correlation between variables while removing the effect of known confounders. 
+In this section we correlate the overall zscore and its components (already zscored and energy adjusted) with the nutrients, food groups and _alternate Dietary Inflammatory Index_ (aDII). The plots below are based on the partial Spearman's correlation coefficients (pSCC) and their respective (unadjusted) p-values. 
+The reason we chose the pSCC is because it allows to calculate the correlation between variables while removing the effect of known confounders.
+
+
 In this case we adjusted for *Age*, *Gender*, *BMI* and *total Kcal* intake (with the exception of the correlations with aDII because is already adjusted for total kcal intake), in this way the make sure that the statistically significant correlation we observe are due to what has been eater rather than how much. Moreover this approach adjust for potential unobserved differences such as different levels of physical activity between obese and non-obese.
 
 
@@ -20,27 +22,22 @@ So if a comparison has a p-value below 0.05 it will be above the horizontal line
 
 ```{r env prep, include=FALSE}
 # Define a character vector with the names of libraries to be used in the analysis
-lib.list<-c(   "dplyr",   
-               "reshape2",   
-               "vegan",   
-               "ggplot2",   
-               "ggsci",   
-               "ggrepel",   
-               "gridExtra",
-               "readxl",
-               "ggnewscale",
-               "summarytools",
-               "GGally",
-               "here")
+
+lib.list<-c(
+  "here",
+  "dplyr",
+  "reshape2",
+  "ggplot2",
+  "ggrepel",
+  "GGally"
+  )
 
 # Use lapply to load each library in the list
-# character.only = TRUE allows the function to accept the library names as character strings
 lapply(lib.list,library,character.only = TRUE)
 
-# Source additional R scripts containing custom functions or settings
-# The 'here' function is used to easily build paths for sourcing files
-# This makes the file paths relative to a designated project directory
-source(here("../Utils/Utility_functions_updated.R")) # Utility functions
+# Source additional R scripts containing custom functions
+# The 'here' function allows the use of paths relative to the project directory
+source(here("code/Utility_functions.R"))
 ```
 
 ```{r load data, include=FALSE}
@@ -87,7 +84,7 @@ rm(Dietary.Object)
 # Preparing the nutrients dataframe by ensuring the same order of subjects ID, fixing issues due to variable names and removing unused variables
 nutrients.cor<-Nutrients%>%
   select(-nutr_kcal)%>% # Nutrient specific kcal are removed because the partial-Spearman CC already corrects for the total Kcal intake
-  dplyr::rename("nutr_flavan_3_ol"="nutr_flavan-3-ol") # correction of the name to avoid errors due to the hyphen
+  dplyr::rename("nutr_flavan_3_ol"="nutr_flavan-3-ol") # replacing - with _ to avoid errors
 
 # Calculate Partial Spearman CC
 nutrients.markrs.corr.obj<-partial_spearman_rho(nutrients.cor|biomarkers~ Metadata, adj.method = "TSBH")
@@ -100,8 +97,8 @@ nutrients.markrs.rho.ci<-nutrients.markrs.corr.obj$CI%>% # Extracting the CI, p-
     labels=ifelse(p.value<0.05, pairs, "")) # Creating column to be used for the plot
 
 # Save fixed nutrients and correlations dataframes
-save(nutrients.cor, file=here("data/Robjects/Nutrients_ready.RData"))
-save(nutrients.markrs.rho.ci, file=here("data/Robjects/Nutrients_Corr_obj.RData"))
+#save(nutrients.cor, file=here("data/Robjects/Nutrients_ready.RData"))
+#save(nutrients.markrs.rho.ci, file=here("data/Robjects/Nutrients_Corr_obj.RData"))
 ```
 
 In the volcano plot below:
@@ -162,8 +159,8 @@ ADII.markrs.corr.obj<-partial_spearman_rho(ADII.cor|biomarkers~ Metadata.adii, a
 ADII.markrs.rho.ci<-ADII.markrs.corr.obj$CI%>%mutate(color=ifelse(p.value<0.05, "darkred", "grey60"),alpha=ifelse(p.value<0.05, 0.8, 0.3),labels=ifelse(p.value<0.05, pairs, ""))
 
 # Save fixed aDII dataframe
-save(ADII.cor, file=here("data/Robjects/ADII_ready.RData"))
-save(ADII.markrs.rho.ci, file=here("data/Robjects/ADII_Corr_obj.RData"))
+#save(ADII.cor, file=here("data/Robjects/ADII_ready.RData"))
+#save(ADII.markrs.rho.ci, file=here("data/Robjects/ADII_Corr_obj.RData"))
 
 ```
 
