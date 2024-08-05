@@ -7,8 +7,39 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Origin
+# Origins
+
+The dataset used in this report is part of the phase 2 of an ongoing clinical study aimed to study the onset of cardio-metabolic diseases.
+The phase 2 of the study is in its early stages and has recalled for a follow-up visit a total of 128 subjects.
+For these 128 subjects, extensive demographics data were collected in phase 1 and new, updated, measurements were collected in phase 2. 
+The new measurements include,but are not limited to:
+
+- anthropometric data (Weight, BMI, Waist circumference, etc.)
+- fecal cytokines (IL-6, IL-8, CRP, etc.)
+- food frequency questionnaires (FFQ)
+
+The goal of this project was to conduct a preliminary investigation on the impact of dietary habits on low-grade inflammation, assessed using a z-score derived from several inflammatory markers
 
 # Filtering
 
+Out of the initial 128 subjects, 30 were excluded due to incomplete FFQs, and another 14 were excluded because inflammatory marker data were unavailable, resulting in a final sample of 84 individuals.
+
+We then performed extensive sanity checks across all the data, to ensure:
+
+- matching IDs between files
+- the numerical variables to be within expected ranges
+- the consistency of categorical and ordinal data
+
+Finally, to clean the data from wrongly reported food intake we filtered out subjects with a BMR/`total kcal declared` ratio below 0.5 and above 3.5.
+
+This left us with a total of 81 subjects.
+
 # Final Dataset
+
+The final dataset used here comprises of:
+
+- *Dietary.Object*: It contains 3 dietary index (aDII, aHEI, and DASH) and their components, a dataframe with the Nutrient intake in grams/day per each individual, and finally a dataframe with the daily intake in grams/day of several food groups (e.g., vegetables, red meat etc.) per each individual.
+To calculate the nutrients and the dietary index, the FFQ were processed using a custom built pipeline.
+Birefly, the pipeline first translate the informations in the FFQ into food items and their daily intake in grams, then it calculate the amount of each metabolite present in the food items and finally, the same nutrients from the different foods are summed up. The results of this process are the *daily_qty* and *daily_foodgroups_qty* which in turn are used to calculate the other dietary index via custom scripts.
+- *biomarkers*: It contains the cytokines data used to calculate the inflammatory z-score. Each marker has been already __log-transformed__, __scaled__, and __centered__. Finally the zscore is calculated as the sum of each cytokines z-score.
+- _Metadata_:It contains the subject's data used to adjust the analysis for confounding factors. 
