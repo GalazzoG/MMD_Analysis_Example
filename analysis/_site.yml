@@ -1,14 +1,12 @@
-name: "MMD_Analysis"
+name: "Nutrition and low grade inflammation"
 output_dir: ../docs
 navbar:
-  title: "MMD_Analysis"
+  title: "Nutrition and low grade inflammation"
   left:
   - text: Home
     href: index.html
-  - text: About
-    href: about.html
-  - text: License
-    href: license.html
+  - text: About this report
+    href: modifications.html
 output:
   workflowr::wflow_html:
     toc: yes

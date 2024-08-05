@@ -16,27 +16,21 @@ In this section, we investigate in more details the correlations observed in the
 Plotting the different variables against one another is a good way to see what we can expect from the models.
 ```{r env prep, include=FALSE}
 # Define a character vector with the names of libraries to be used in the analysis
-lib.list<-c(   "dplyr",   
-               "reshape2",   
-               "vegan",   
-               "ggplot2",   
-               "ggsci",   
-               "ggrepel",   
-               "gridExtra",
-               "readxl",
-               "ggnewscale",
-               "summarytools",
-               "GGally",
-               "here")
+lib.list<-c(
+  "here",
+  "dplyr",
+  "reshape2",
+  "ggplot2",
+  "ggrepel",
+  "GGally"
+  )
 
 # Use lapply to load each library in the list
-# character.only = TRUE allows the function to accept the library names as character strings
 lapply(lib.list,library,character.only = TRUE)
 
-# Source additional R scripts containing custom functions or settings
-# The 'here' function is used to easily build paths for sourcing files
-# This makes the file paths relative to a designated project directory
-source(here("../Utils/Utility_functions_updated.R")) # Utility functions
+# Source additional R scripts containing custom functions
+# The 'here' function allows the use of paths relative to the project directory
+source(here("code/Utility_functions.R")) # Utility functions
 ```
 
 ```{r load data, include=FALSE}
