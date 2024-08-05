@@ -19,7 +19,7 @@ Description:
 -   docs:
 
     -   This folder contains the HTML files created by the R markdown file inside the analysis folder. 
-    The single sections of the report can be visualised by opening the relative HTML file or accessed through the [Home page](docs/index.html)
+    The single sections of the report can be visualised by opening the relative HTML file or accessed through the [Home page](https://galazzog.github.io/MMD_Analysis_Example/index.html)
 
 -   \_workflowr.yml: it contains configuration information for workflowr
 
